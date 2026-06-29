@@ -30,6 +30,12 @@
                 linear-gradient(160deg, #dde9fb 0%, #eef2f8 48%, #e7e0fa 100%);
     --sidebar-bg: #ffffff;
     --info-bg:   #e7edf5;
+    --glass-bg:  rgba(255,255,255,.55);
+    --glass-bd:  rgba(255,255,255,.65);
+    --glass-strong: rgba(255,255,255,.78);
+    --glass-sidebar: rgba(255,255,255,.7);
+    --track: rgba(100,116,139,.22);
+    --kpi-capex: #6366f1;
   }
   html[data-theme="dark"] {
     --bg:       #0d1117;
@@ -53,6 +59,12 @@
                 linear-gradient(160deg, #0a0e14 0%, #0d1117 45%, #131628 100%);
     --sidebar-bg: #11161f;
     --info-bg:   #0f141d;
+    --glass-bg:  rgba(26,33,44,.45);
+    --glass-bd:  rgba(255,255,255,.10);
+    --glass-strong: rgba(22,29,40,.82);
+    --glass-sidebar: rgba(17,22,31,.72);
+    --track: rgba(255,255,255,.16);
+    --kpi-capex: #818cf8;
     color-scheme: dark;
   }
 
@@ -76,8 +88,10 @@
 
   /* ── Sidebar ────────────────────────────────────────────────────────────── */
   .sidebar {
-    background: var(--sidebar-bg);
-    border: 1px solid var(--border);
+    background: var(--glass-sidebar);
+    -webkit-backdrop-filter: blur(22px) saturate(1.6);
+    backdrop-filter: blur(22px) saturate(1.6);
+    border: 1px solid var(--glass-bd);
     border-radius: 18px;
     margin: 16px 0 16px 16px;
     padding: 28px 22px;
@@ -88,12 +102,12 @@
     scrollbar-width: thin;
     scrollbar-color: var(--border) transparent;
   }
-  /* scrollbar gutter matches the sidebar background on both sides of the thumb */
+  /* slim scrollbar with a transparent gutter so the glass shows through */
   .sidebar::-webkit-scrollbar { width: 8px; }
-  .sidebar::-webkit-scrollbar-track { background: var(--sidebar-bg); }
+  .sidebar::-webkit-scrollbar-track { background: transparent; }
   .sidebar::-webkit-scrollbar-thumb {
     background: var(--border); border-radius: 99px;
-    border: 2px solid var(--sidebar-bg);
+    border: 2px solid transparent; background-clip: padding-box;
   }
   .sidebar-spacer { flex: 1; }
   .sidebar-brand { margin-bottom: 24px; }
@@ -120,19 +134,25 @@
   }
 
   /* Solvent tabs */
-  .solvent-tabs { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 5px; }
+  /* glass segmented control (matches the page switcher) */
+  .solvent-tabs {
+    display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 4px; padding: 4px;
+    background: var(--glass-bg);
+    -webkit-backdrop-filter: blur(16px) saturate(1.5);
+    backdrop-filter: blur(16px) saturate(1.5);
+    border: 1px solid var(--glass-bd); border-radius: 11px; box-shadow: var(--shadow);
+  }
   .stab {
-    padding: 7px 6px; border-radius: 7px;
-    border: 1.5px solid var(--border);
-    background: transparent; color: var(--muted);
+    padding: 7px 6px; border-radius: 8px;
+    border: none; background: transparent; color: var(--muted);
     font-size: 12.5px; font-weight: 600; font-family: inherit;
     cursor: pointer; text-align: center;
-    transition: all .15s ease;
+    transition: color .2s, background .2s, box-shadow .2s;
   }
-  .stab:hover { border-color: var(--accent); color: var(--accent); }
-  .stab.sel-mea   { background: var(--mea);   border-color: var(--mea);   color: #fff; }
-  .stab.sel-pz    { background: var(--pz);    border-color: var(--pz);    color: #fff; }
-  .stab.sel-k2co3 { background: var(--k2co3); border-color: var(--k2co3); color: #fff; }
+  .stab:hover { color: var(--text); }
+  .stab.sel-mea   { color: var(--mea);   background: color-mix(in srgb, var(--mea)   18%, transparent); box-shadow: 0 1px 3px rgba(0,0,0,.08); }
+  .stab.sel-pz    { color: var(--pz);    background: color-mix(in srgb, var(--pz)    18%, transparent); box-shadow: 0 1px 3px rgba(0,0,0,.08); }
+  .stab.sel-k2co3 { color: var(--k2co3); background: color-mix(in srgb, var(--k2co3) 18%, transparent); box-shadow: 0 1px 3px rgba(0,0,0,.08); }
   .solvent-info {
     margin-top: 8px; padding: 10px 12px;
     background: var(--info-bg); border: 1px solid var(--border); border-radius: 8px;
@@ -165,14 +185,17 @@
     white-space: nowrap;
   }
   input[type=range] {
-    width: 100%; height: 5px; cursor: pointer;
+    width: 100%; height: 6px; cursor: pointer;
     appearance: none; -webkit-appearance: none;
-    background: var(--border); border-radius: 99px; outline: none;
+    background: var(--track); border-radius: 99px; outline: none;
   }
   input[type=range]::-webkit-slider-thumb {
-    -webkit-appearance: none; width: 14px; height: 14px;
-    border-radius: 50%; background: var(--accent);
-    box-shadow: 0 0 0 3px var(--accent-lt);
+    -webkit-appearance: none; width: 16px; height: 16px;
+    border-radius: 50%; background: var(--glass-strong);
+    border: 1px solid var(--glass-bd);
+    -webkit-backdrop-filter: blur(8px) saturate(1.5);
+    backdrop-filter: blur(8px) saturate(1.5);
+    box-shadow: 0 1px 3px rgba(0,0,0,.25), 0 0 0 3px var(--accent-lt);
     cursor: pointer;
   }
 
@@ -189,29 +212,35 @@
     display: inline-flex; align-items: center; gap: 5px;
     padding: 5px 12px; border-radius: 99px;
     background: var(--accent-lt); color: var(--accent);
-    font-size: 12px; font-weight: 600; margin-right: 132px;
+    font-size: 12px; font-weight: 600; margin-top: 12px;
   }
 
   /* KPI row */
   .kpi-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
   .kpi {
     position: relative; overflow: hidden;
-    background: var(--surface); border: 1px solid var(--border);
-    border-radius: 14px; padding: 20px 22px;
+    background: var(--glass-bg);
+    -webkit-backdrop-filter: blur(18px) saturate(1.6);
+    backdrop-filter: blur(18px) saturate(1.6);
+    border: 1px solid var(--glass-bd);
+    border-radius: 16px; padding: 20px 22px;
     box-shadow: var(--shadow);
-    transition: transform .15s ease, box-shadow .15s ease;
+    transition: transform .4s cubic-bezier(.34,1.56,.64,1),
+                box-shadow .3s ease, border-color .3s ease;
   }
-  .kpi:hover { transform: translateY(-2px); box-shadow: var(--shadow-md); }
-  /* accent strip on the headline (cost) card */
-  .kpi.is-primary::before {
-    content: ""; position: absolute; left: 0; top: 14px; bottom: 14px;
-    width: 3px; border-radius: 0 3px 3px 0; background: var(--accent);
-  }
+  .kpi:hover { transform: translateY(-4px); box-shadow: var(--shadow-md); }
+  /* subtle per-metric tint — a hue-true translucent color layered OVER the glass
+     (mixing into the bluish glass-bg skews hues in dark mode) */
+  .kpi.tint-blue   { background: linear-gradient(color-mix(in srgb, var(--accent)     15%, transparent), color-mix(in srgb, var(--accent)     15%, transparent)), var(--glass-bg); }
+  .kpi.tint-indigo { background: linear-gradient(color-mix(in srgb, var(--kpi-capex) 15%, transparent), color-mix(in srgb, var(--kpi-capex) 15%, transparent)), var(--glass-bg); }
+  .kpi.tint-green  { background: linear-gradient(color-mix(in srgb, var(--green)      15%, transparent), color-mix(in srgb, var(--green)      15%, transparent)), var(--glass-bg); }
+  .kpi.tint-slate  { background: linear-gradient(color-mix(in srgb, #94a3b8           18%, transparent), color-mix(in srgb, #94a3b8           18%, transparent)), var(--glass-bg); }
   .kpi-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
   .kpi-label { font-size: 11.5px; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: .05em; }
   .kpi-value { font-size: 29px; font-weight: 700; letter-spacing: -.025em; color: var(--text); line-height: 1; }
   .kpi-value.primary { color: var(--accent); }
   .kpi-value.green   { color: var(--green);  }
+  .kpi-value.indigo  { color: var(--kpi-capex); }
   .kpi-unit { font-size: 14px; font-weight: 700; letter-spacing: -.01em; margin-left: 7px; }
   .kpi-meta { font-size: 11.5px; color: var(--faint); margin-top: 9px; }
 
@@ -219,12 +248,16 @@
   .chart-grid    { display: grid; grid-template-columns: 1fr 1fr; gap: 22px; }
   .chart-grid-3  { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 22px; }
   .card {
-    background: var(--surface); border: 1px solid var(--border);
-    border-radius: 14px; padding: 22px 24px;
+    background: var(--glass-bg);
+    -webkit-backdrop-filter: blur(18px) saturate(1.6);
+    backdrop-filter: blur(18px) saturate(1.6);
+    border: 1px solid var(--glass-bd);
+    border-radius: 16px; padding: 22px 24px;
     box-shadow: var(--shadow);
-    transition: box-shadow .15s ease;
+    transition: transform .4s cubic-bezier(.34,1.56,.64,1),
+                box-shadow .3s ease, border-color .3s ease;
   }
-  .card:hover { box-shadow: var(--shadow-md); }
+  .card:hover { transform: translateY(-4px); box-shadow: var(--shadow-md); }
   .card.span-2 { grid-column: span 2; }
   .card.span-3 { grid-column: span 3; }
   .card-title { font-size: 14.5px; font-weight: 600; color: var(--text); letter-spacing: -.01em; }
@@ -247,8 +280,10 @@
     position: absolute; top: 18px; right: 20px; z-index: 50;
     display: flex; align-items: center; justify-content: center; gap: 7px;
     width: 118px; padding: 8px 12px;
-    border: 1.5px solid var(--border); border-radius: 8px;
-    background: var(--surface); color: var(--muted);
+    border: 1px solid var(--glass-bd); border-radius: 10px;
+    background: var(--glass-bg); color: var(--muted);
+    -webkit-backdrop-filter: blur(16px) saturate(1.5);
+    backdrop-filter: blur(16px) saturate(1.5);
     font-size: 12px; font-weight: 500; font-family: inherit;
     cursor: pointer; transition: all .15s; box-shadow: var(--shadow);
   }
@@ -272,18 +307,23 @@
   /* Modal overlay */
   .modal-overlay {
     display: none; position: fixed; inset: 0;
-    background: rgba(15,23,42,.32);
-    backdrop-filter: blur(5px); -webkit-backdrop-filter: blur(5px);
+    background: rgba(15,23,42,.18);
+    backdrop-filter: blur(3px); -webkit-backdrop-filter: blur(3px);
     z-index: 100; align-items: center; justify-content: center;
   }
   .modal-overlay.open { display: flex; }
   .modal {
-    background: var(--surface); border: 1px solid var(--border);
-    border-radius: 14px; padding: 26px 28px; max-width: 460px; width: 90%;
-    box-shadow: 0 20px 60px rgba(0,0,0,.15); position: relative;
-    animation: popIn .18s ease;
+    background: var(--glass-strong);
+    /* fallback: plain frosted glass */
+    -webkit-backdrop-filter: blur(28px) saturate(1.7);
+    backdrop-filter: blur(28px) saturate(1.7);
+    /* enhancement: refraction via SVG displacement (Chrome) */
+    backdrop-filter: blur(7px) saturate(1.8) url(#liquid-glass);
+    border: 1px solid var(--glass-bd);
+    border-radius: 18px; padding: 26px 28px; max-width: 460px; width: 90%;
+    box-shadow: 0 20px 60px rgba(0,0,0,.18); position: relative;
+    will-change: transform, opacity;
   }
-  @keyframes popIn { from { opacity:0; transform:scale(.96) translateY(6px); } to { opacity:1; transform:none; } }
   .modal-title { font-size: 16px; font-weight: 700; color: var(--text); margin-bottom: 11px; }
   .modal-body  { font-size: 14px; color: var(--muted); line-height: 1.7; }
   .modal-body strong { color: var(--text); font-weight: 600; }
@@ -297,15 +337,26 @@
   .modal-close:hover { background: var(--border); }
 
   /* ── Page navigation ─────────────────────────────────────────────────────── */
-  .page-nav { display:flex; gap:2px; margin-bottom:22px; border-bottom:1px solid var(--border); }
+  /* glass segmented control */
+  .page-nav {
+    display:inline-flex; gap:4px; margin-bottom:22px; padding:4px;
+    align-self:flex-start;
+    background:var(--glass-bg);
+    -webkit-backdrop-filter:blur(16px) saturate(1.5);
+    backdrop-filter:blur(16px) saturate(1.5);
+    border:1px solid var(--glass-bd); border-radius:12px; box-shadow:var(--shadow);
+  }
   #page-analysis, #page-overview { display:flex; flex-direction:column; gap:22px; }
   .page-tab {
-    padding:8px 22px; font-size:12.5px; font-weight:600; font-family:inherit;
+    padding:7px 18px; font-size:12.5px; font-weight:600; font-family:inherit;
     border:none; background:transparent; color:var(--muted); cursor:pointer;
-    border-bottom:2.5px solid transparent; margin-bottom:-1px; transition:all .15s;
+    border-radius:9px; transition:color .2s, background .2s, box-shadow .2s;
   }
   .page-tab:hover { color:var(--text); }
-  .page-tab.active { color:var(--accent); border-bottom-color:var(--accent); }
+  .page-tab.active {
+    color:var(--accent); background:var(--accent-lt);
+    box-shadow:0 1px 3px rgba(0,0,0,.08);
+  }
 
   /* ── PFD (new) ──────────────────────────────────────────────────────────────── */
   :root {
@@ -376,11 +427,15 @@
   .step-row { display:grid; grid-template-columns:repeat(5,1fr); gap:14px; }
   .step-card {
     position:relative;
-    background:var(--info-bg); border:1px solid var(--border);
-    border-radius:14px; padding:18px 16px; box-shadow:var(--shadow);
-    transition:transform .15s ease, box-shadow .15s ease;
+    background:var(--glass-bg);
+    -webkit-backdrop-filter:blur(18px) saturate(1.6);
+    backdrop-filter:blur(18px) saturate(1.6);
+    border:1px solid var(--glass-bd);
+    border-radius:16px; padding:18px 16px; box-shadow:var(--shadow);
+    transition:transform .4s cubic-bezier(.34,1.56,.64,1),
+               box-shadow .3s ease, border-color .3s ease;
   }
-  .step-card:hover { transform:translateY(-2px); box-shadow:var(--shadow-md); }
+  .step-card:hover { transform:translateY(-4px); box-shadow:var(--shadow-md); }
   /* connector line between consecutive steps */
   .step-card:not(:first-child)::before {
     content:""; position:absolute; left:-14px; top:31px;
@@ -419,6 +474,15 @@
 </style>
 </head>
 <body>
+
+<!-- Liquid-glass edge refraction (Chrome-only; squircle displacement map generated at runtime) -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <filter id="liquid-glass" x="0" y="0" width="100%" height="100%" color-interpolation-filters="sRGB">
+    <feImage id="lg-map" result="dmap" preserveAspectRatio="none"></feImage>
+    <feDisplacementMap in="SourceGraphic" in2="dmap" scale="40" xChannelSelector="R" yChannelSelector="G"></feDisplacementMap>
+  </filter>
+</svg>
+
 <div class="shell">
 
 <!-- ── Sidebar ─────────────────────────────────────────────────────────────── -->
@@ -628,13 +692,13 @@
     <div>
       <h2>Cost of Carbon Capture</h2>
       <p>Post-combustion, solvent-based: parameters from NETL/IEA published literature</p>
+      <div class="badge" id="header-badge">MEA · 500 t/day</div>
     </div>
-    <div class="badge" id="header-badge">MEA · 500 t/day</div>
   </div>
 
   <!-- KPIs -->
   <div class="kpi-row">
-    <div class="kpi is-primary">
+    <div class="kpi is-primary tint-blue">
       <div class="kpi-header">
         <div class="kpi-label">Levelised Cost</div>
         <button class="info-btn" onclick="showInfo('kpi-cost')">i</button>
@@ -642,15 +706,15 @@
       <div class="kpi-value primary" id="kpi-cost">-</div>
       <div class="kpi-meta">USD per tonne CO₂</div>
     </div>
-    <div class="kpi">
+    <div class="kpi tint-indigo">
       <div class="kpi-header">
         <div class="kpi-label">Total CAPEX</div>
         <button class="info-btn" onclick="showInfo('kpi-capex')">i</button>
       </div>
-      <div class="kpi-value" id="kpi-capex">-</div>
+      <div class="kpi-value indigo" id="kpi-capex">-</div>
       <div class="kpi-meta" id="kpi-crf">CRF:</div>
     </div>
-    <div class="kpi">
+    <div class="kpi tint-green">
       <div class="kpi-header">
         <div class="kpi-label">CO₂ Captured</div>
         <button class="info-btn" onclick="showInfo('kpi-co2')">i</button>
@@ -658,7 +722,7 @@
       <div class="kpi-value green"><span id="kpi-co2">-</span><span class="kpi-unit">tonnes/yr</span></div>
       <div class="kpi-meta">Captured annually</div>
     </div>
-    <div class="kpi">
+    <div class="kpi tint-slate">
       <div class="kpi-header">
         <div class="kpi-label">Annual OPEX</div>
         <button class="info-btn" onclick="showInfo('kpi-opex')">i</button>
@@ -837,7 +901,7 @@ function fillSlider(id){
   const pct=((s.value-s.min)/(s.max-s.min))*100;
   const cs=getComputedStyle(s);
   const fill=cs.getPropertyValue('--accent').trim();
-  const rest=cs.getPropertyValue('--border').trim();
+  const rest=cs.getPropertyValue('--track').trim();
   s.style.background=`linear-gradient(to right, ${fill} 0%, ${fill} ${pct}%, ${rest} ${pct}%, ${rest} 100%)`;
 }
 
@@ -1215,13 +1279,127 @@ The <strong>currently selected solvent</strong> is shown with a thicker line.`
   },
 };
 
+// Capture the rect of the control that was clicked, so the panel can morph out of it (FLIP)
+let sourceRect = null;
+document.addEventListener("pointerdown", e => {
+  const t = e.target.closest(".info-btn, .pfd-equip, .kpi, .stab");
+  sourceRect = (t || e.target).getBoundingClientRect();
+}, true);
+
+const SPRING = "cubic-bezier(.34,1.56,.64,1)";   // overshoot-and-settle
+let modalAnim = null, overlayAnim = null, lastMorph = null;
+
+// ── Liquid-glass edge-refraction map (squircle bezel → R/G displacement) ──────
+function buildDisplacementMap(w, h, radius, bezel) {
+  w = Math.max(2, Math.round(w)); h = Math.max(2, Math.round(h));
+  const c = document.createElement("canvas"); c.width = w; c.height = h;
+  const ctx = c.getContext("2d");
+  const img = ctx.createImageData(w, h); const d = img.data;
+  const squircle = x => Math.pow(1 - Math.pow(1 - x, 4), 0.25);   // soft flat→curve
+
+  // signed distance into a rounded rectangle (>=0 inside, = distance from edge)
+  const halfW = w/2, halfH = h/2;
+  function dist(px, py) {
+    // depth inside a rounded rect (>0 inside, distance from the nearest edge)
+    const qx = Math.abs(px - halfW) - halfW + radius;
+    const qy = Math.abs(py - halfH) - halfH + radius;
+    const ax = Math.max(qx, 0), ay = Math.max(qy, 0);
+    const sdf = Math.min(Math.max(qx, qy), 0) + Math.hypot(ax, ay) - radius;
+    return -sdf;
+  }
+
+  const vx = new Float32Array(w*h), vy = new Float32Array(w*h);
+  let maxMag = 1e-6;
+  for (let y = 0; y < h; y++) {
+    for (let x = 0; x < w; x++) {
+      const i = y*w + x, px = x + 0.5, py = y + 0.5;
+      const dd = dist(px, py);
+      let mag = 0, nx = 0, ny = 0;
+      if (dd >= 0 && dd < bezel) {
+        const t = dd / bezel;                                     // 0 at rim, 1 inner
+        mag = Math.max(0, (squircle(Math.min(1,t+0.01)) - squircle(Math.max(0,t-0.01))) / 0.02);
+        // inward normal = gradient of the distance field
+        const gx = dist(px+1, py) - dist(px-1, py);
+        const gy = dist(px, py+1) - dist(px, py-1);
+        const L = Math.hypot(gx, gy) || 1; nx = gx/L; ny = gy/L;
+      }
+      vx[i] = nx*mag; vy[i] = ny*mag;
+      if (mag > maxMag) maxMag = mag;
+    }
+  }
+  for (let i = 0; i < w*h; i++) {
+    d[i*4]   = 128 + (vx[i]/maxMag) * 127;   // R → X displacement
+    d[i*4+1] = 128 + (vy[i]/maxMag) * 127;   // G → Y displacement
+    d[i*4+2] = 128; d[i*4+3] = 255;
+  }
+  ctx.putImageData(img, 0, 0);
+  return c.toDataURL();
+}
+
+function applyModalGlass(w, h) {
+  const radius = 18, bezel = Math.min(26, Math.min(w, h) / 2.2);
+  const fe = document.getElementById("lg-map");
+  fe.setAttribute("href", buildDisplacementMap(w, h, radius, bezel));
+  fe.setAttribute("x", 0); fe.setAttribute("y", 0);
+  fe.setAttribute("width", Math.round(w)); fe.setAttribute("height", Math.round(h));
+}
+
+// Transform that maps the modal box onto the source control's box
+function morphFrom(modalRect, src) {
+  const s  = Math.max(0.05, src.width / modalRect.width);   // uniform scale from source width
+  const tx = (src.left + src.width/2)  - (modalRect.left + modalRect.width/2);
+  const ty = (src.top  + src.height/2) - (modalRect.top  + modalRect.height/2);
+  return `translate(${tx}px, ${ty}px) scale(${s})`;
+}
+
 function showInfo(key) {
-  const info = INFO[key];
+  const info = INFO[key]; if(!info) return;
   el("modal-title").textContent = info.title;
   el("modal-body").innerHTML    = info.body;
-  el("modal-overlay").classList.add("open");
+
+  const overlay = el("modal-overlay");
+  const modal   = overlay.querySelector(".modal");
+  overlay.classList.add("open");
+
+  modal.style.transformOrigin = "center center";
+  const modalRect = modal.getBoundingClientRect();
+  applyModalGlass(modalRect.width, modalRect.height);   // refraction map sized to the panel
+
+  if (modalAnim)   modalAnim.cancel();
+  if (overlayAnim) overlayAnim.cancel();
+
+  // Overlay backdrop fades in
+  overlayAnim = overlay.animate(
+    [{ opacity: 0 }, { opacity: 1 }],
+    { duration: 200, easing: "ease-out", fill: "both" }
+  );
+
+  // Panel: consistent gentle rise + settle, identical from every trigger
+  modalAnim = modal.animate([
+    { transform: "scale(.96) translateY(8px)", opacity: 0 },
+    { transform: "scale(1) translateY(0)",     opacity: 1 }
+  ], { duration: 300, easing: SPRING, fill: "both" });
 }
-function hideInfo() { el("modal-overlay").classList.remove("open"); }
+
+function hideInfo() {
+  const overlay = el("modal-overlay");
+  if (!overlay.classList.contains("open")) return;
+  const modal = overlay.querySelector(".modal");
+
+  if (modalAnim)   modalAnim.cancel();
+  if (overlayAnim) overlayAnim.cancel();
+
+  overlayAnim = overlay.animate(
+    [{ opacity: 1 }, { opacity: 0 }],
+    { duration: 160, easing: "ease-in", fill: "forwards" }
+  );
+  const out = modal.animate([
+    { transform: "scale(1) translateY(0)",     opacity: 1 },
+    { transform: "scale(.97) translateY(6px)", opacity: 0 }
+  ], { duration: 160, easing: "ease-in", fill: "forwards" });
+
+  out.onfinish = () => { overlay.classList.remove("open"); };
+}
 function closeInfo(e) { if(e.target===el("modal-overlay")) hideInfo(); }
 document.addEventListener("keydown", e => { if(e.key==="Escape") hideInfo(); });
 </script>
