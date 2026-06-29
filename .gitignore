@@ -14,6 +14,9 @@ env/
 # Generated data
 data/results.json
 
+# Local backups
+backup/
+
 # OS / editor
 .DS_Store
 .idea/
