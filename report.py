@@ -288,7 +288,8 @@ HTML_TEMPLATE = r"""<!DOCTYPE html>
   /* Modal overlay */
   .modal-overlay {
     display: none; position: fixed; inset: 0;
-    background: rgba(15,23,42,.25); backdrop-filter: blur(2px);
+    background: rgba(15,23,42,.32);
+    backdrop-filter: blur(5px); -webkit-backdrop-filter: blur(5px);
     z-index: 100; align-items: center; justify-content: center;
   }
   .modal-overlay.open { display: flex; }
@@ -562,32 +563,32 @@ HTML_TEMPLATE = r"""<!DOCTYPE html>
 
         <!-- equipment -->
         <div class="pfd-equip pfd-column pfd-teal" style="left:11.72%;top:20.27%;width:13.28%;height:56.76%" onclick="showInfo('pfd-absorber')">
-          <span class="pfd-badge">1</span>
+          <span class="pfd-badge">A</span>
           <span class="pfd-name">Absorber</span>
           <span class="pfd-desc">CO₂ → solvent</span>
         </div>
         <div class="pfd-equip pfd-blue" style="left:40.63%;top:42.57%;width:12.89%;height:15.54%" onclick="showInfo('pfd-hx')">
-          <span class="pfd-badge">2</span>
+          <span class="pfd-badge">B</span>
           <span class="pfd-name">Lean–Rich HX</span>
           <span class="pfd-desc">Heat recovery</span>
         </div>
         <div class="pfd-equip pfd-teal" style="left:40.63%;top:69.59%;width:12.89%;height:13.51%" onclick="showInfo('pfd-cooler')">
-          <span class="pfd-badge">3</span>
+          <span class="pfd-badge">C</span>
           <span class="pfd-name">Lean Cooler</span>
           <span class="pfd-desc">Cools solvent</span>
         </div>
         <div class="pfd-equip pfd-column pfd-heat" style="left:63.67%;top:18.92%;width:14.06%;height:48.65%" onclick="showInfo('pfd-regenerator')">
-          <span class="pfd-badge">4</span>
+          <span class="pfd-badge">D</span>
           <span class="pfd-name">Regenerator</span>
           <span class="pfd-desc">Strips CO₂</span>
         </div>
         <div class="pfd-equip pfd-heat" style="left:63.67%;top:75.68%;width:14.06%;height:12.84%" onclick="showInfo('pfd-reboiler')">
-          <span class="pfd-badge">5</span>
+          <span class="pfd-badge">E</span>
           <span class="pfd-name">Reboiler</span>
           <span class="pfd-desc">Steam heat</span>
         </div>
         <div class="pfd-equip pfd-power" style="left:83.98%;top:15.54%;width:11.72%;height:15.54%" onclick="showInfo('pfd-compressor')">
-          <span class="pfd-badge">6</span>
+          <span class="pfd-badge">F</span>
           <span class="pfd-name">CO₂ Compressor</span>
           <span class="pfd-desc">→ 150 bar</span>
         </div>
@@ -731,15 +732,6 @@ HTML_TEMPLATE = r"""<!DOCTYPE html>
     <div class="chart-wrap h180"><canvas id="sensitivityChart"></canvas></div>
   </div>
 
-  <!-- Info modal -->
-  <div class="modal-overlay" id="modal-overlay" onclick="closeInfo(event)">
-    <div class="modal">
-      <button class="modal-close" onclick="hideInfo()">✕</button>
-      <div class="modal-title" id="modal-title"></div>
-      <div class="modal-body"  id="modal-body"></div>
-    </div>
-  </div>
-
   <!-- Sources -->
   <div class="sources-bar">
     <strong>Data sources:</strong>
@@ -751,6 +743,15 @@ HTML_TEMPLATE = r"""<!DOCTYPE html>
   </div>
 
   </div><!-- end page-analysis -->
+
+  <!-- Info modal (outside the page panels so it works on every tab) -->
+  <div class="modal-overlay" id="modal-overlay" onclick="closeInfo(event)">
+    <div class="modal">
+      <button class="modal-close" onclick="hideInfo()">✕</button>
+      <div class="modal-title" id="modal-title"></div>
+      <div class="modal-body"  id="modal-body"></div>
+    </div>
+  </div>
 
 </main>
 </div>
