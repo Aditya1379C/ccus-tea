@@ -36,72 +36,102 @@ HTML_TEMPLATE = r"""<!DOCTYPE html>
     --accent-lt:#eff6ff;
     --green:    #16a34a;
     --green-lt: #f0fdf4;
-    --mea:      #2563eb;
-    --pz:       #16a34a;
-    --k2co3:    #d97706;
+    --mea:      #3b82f6;
+    --pz:       #10b981;
+    --k2co3:    #f59e0b;
     --shadow:   0 1px 3px rgba(0,0,0,.06), 0 1px 2px rgba(0,0,0,.04);
     --shadow-md:0 4px 12px rgba(0,0,0,.08);
+    --bg-grad:  radial-gradient(1000px 560px at 100% -5%, rgba(59,130,246,.22), transparent 60%),
+                radial-gradient(900px 620px at -5% 105%, rgba(16,185,129,.16), transparent 58%),
+                linear-gradient(160deg, #dde9fb 0%, #eef2f8 48%, #e7e0fa 100%);
+    --sidebar-bg: #ffffff;
+    --info-bg:   #e7edf5;
   }
   html[data-theme="dark"] {
-    --bg:       #141414;
-    --surface:  #1e1e1e;
-    --border:   rgba(255,255,255,.10);
-    --divider:  #2a2a2a;
-    --text:     #f1f5f9;
-    --muted:    #a1a1a1;
-    --faint:    #6b7280;
-    --accent:   #60a5fa;
-    --accent-lt:rgba(96,165,250,.12);
-    --green:    #34d399;
-    --green-lt: rgba(52,211,153,.12);
-    --mea:      #60a5fa;
-    --pz:       #34d399;
-    --k2co3:    #fbbf24;
-    --shadow:   0 1px 3px rgba(0,0,0,.4), 0 1px 2px rgba(0,0,0,.3);
-    --shadow-md:0 4px 12px rgba(0,0,0,.5);
+    --bg:       #0d1117;
+    --surface:  #171d26;
+    --border:   rgba(148,163,184,.16);
+    --divider:  #222b37;
+    --text:     #e8edf4;
+    --muted:    #9babbf;
+    --faint:    #6b7b8f;
+    --accent:   #6cb0ff;
+    --accent-lt:rgba(108,176,255,.14);
+    --green:    #3ddc97;
+    --green-lt: rgba(61,220,151,.14);
+    --mea:      #6cb0ff;
+    --pz:       #3ddc97;
+    --k2co3:    #f5b840;
+    --shadow:   0 1px 3px rgba(0,0,0,.5), 0 1px 2px rgba(0,0,0,.35);
+    --shadow-md:0 6px 18px rgba(0,0,0,.55);
+    --bg-grad:  radial-gradient(1000px 560px at 100% -5%, rgba(108,176,255,.16), transparent 60%),
+                radial-gradient(900px 620px at -5% 105%, rgba(61,220,151,.10), transparent 58%),
+                linear-gradient(160deg, #0a0e14 0%, #0d1117 45%, #131628 100%);
+    --sidebar-bg: #11161f;
+    --info-bg:   #0f141d;
     color-scheme: dark;
   }
 
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
   body {
     font-family: 'IBM Plex Sans', system-ui, sans-serif;
-
+    font-size: 13px;
+    background: var(--bg-grad), var(--bg);
+    background-attachment: fixed;
+    color: var(--text);
+    line-height: 1.5;
+  }
   h1, h2, h3,
   .card-title, .card-header-text, .page-header,
   .kpi-value, .kpi-label, .modal-title, .step-title,
   .sidebar-section-label { font-family: 'Space Grotesk', system-ui, sans-serif; }
   code, pre, .mono { font-family: 'IBM Plex Mono', monospace; }
-    font-size: 13px;
-    background: var(--bg);
-    color: var(--text);
-    line-height: 1.5;
-  }
 
   /* ── Page shell ─────────────────────────────────────────────────────────── */
-  .shell { display: grid; grid-template-columns: 300px 1fr; min-height: 100vh; }
+  .shell { position: relative; display: grid; grid-template-columns: 340px 1fr; min-height: 100vh; gap: 4px; }
 
   /* ── Sidebar ────────────────────────────────────────────────────────────── */
   .sidebar {
-    background: var(--surface);
-    border-right: 1px solid var(--border);
+    background: var(--sidebar-bg);
+    border: 1px solid var(--border);
+    border-radius: 18px;
+    margin: 16px 0 16px 16px;
     padding: 28px 22px;
-    position: sticky; top: 0; height: 100vh;
+    position: sticky; top: 16px; height: calc(100vh - 32px);
     overflow-y: auto;
     display: flex; flex-direction: column;
+    box-shadow: var(--shadow);
+    scrollbar-width: thin;
+    scrollbar-color: var(--border) transparent;
+  }
+  /* scrollbar gutter matches the sidebar background on both sides of the thumb */
+  .sidebar::-webkit-scrollbar { width: 8px; }
+  .sidebar::-webkit-scrollbar-track { background: var(--sidebar-bg); }
+  .sidebar::-webkit-scrollbar-thumb {
+    background: var(--border); border-radius: 99px;
+    border: 2px solid var(--sidebar-bg);
   }
   .sidebar-spacer { flex: 1; }
   .sidebar-brand { margin-bottom: 24px; }
+  .brand-row { display: flex; align-items: center; gap: 11px; }
+  .brand-mark {
+    width: 36px; height: 36px; flex-shrink: 0; border-radius: 10px;
+    background: linear-gradient(135deg, var(--accent), var(--pz));
+    display: flex; align-items: center; justify-content: center;
+    color: #fff; box-shadow: var(--shadow-md);
+  }
+  .brand-mark svg { width: 20px; height: 20px; }
   .sidebar-brand h1 {
-    font-size: 15px; font-weight: 700; color: var(--text);
+    font-size: 17px; font-weight: 700; color: var(--text);
     letter-spacing: -0.01em; line-height: 1.3;
   }
   .sidebar-brand p {
-    font-size: 11.5px; color: var(--muted); margin-top: 4px; line-height: 1.55;
+    font-size: 13px; color: var(--muted); margin-top: 5px; line-height: 1.55;
   }
 
   .sidebar-section { margin-bottom: 22px; }
   .sidebar-section-label {
-    font-size: 10px; font-weight: 700; text-transform: uppercase;
+    font-size: 11.5px; font-weight: 700; text-transform: uppercase;
     letter-spacing: .07em; color: var(--faint); margin-bottom: 10px;
   }
 
@@ -111,7 +141,7 @@ HTML_TEMPLATE = r"""<!DOCTYPE html>
     padding: 7px 6px; border-radius: 7px;
     border: 1.5px solid var(--border);
     background: transparent; color: var(--muted);
-    font-size: 11px; font-weight: 600; font-family: inherit;
+    font-size: 12.5px; font-weight: 600; font-family: inherit;
     cursor: pointer; text-align: center;
     transition: all .15s ease;
   }
@@ -120,21 +150,38 @@ HTML_TEMPLATE = r"""<!DOCTYPE html>
   .stab.sel-pz    { background: var(--pz);    border-color: var(--pz);    color: #fff; }
   .stab.sel-k2co3 { background: var(--k2co3); border-color: var(--k2co3); color: #fff; }
   .solvent-info {
-    margin-top: 8px; padding: 9px 11px;
-    background: var(--divider); border-radius: 7px;
-    font-size: 11px; color: var(--muted); line-height: 1.55;
+    margin-top: 8px; padding: 10px 12px;
+    background: var(--info-bg); border: 1px solid var(--border); border-radius: 8px;
+    font-size: 12.5px; color: var(--muted); line-height: 1.55;
+  }
+  .solvent-name {
+    display: block; font-weight: 700; color: var(--text);
+    font-size: 13px; margin-bottom: 6px;
+  }
+  .solvent-desc { list-style: none; margin: 0; padding: 0; }
+  .solvent-desc li {
+    position: relative; padding-left: 14px; margin-bottom: 6px;
+  }
+  .solvent-desc li:last-child { margin-bottom: 0; }
+  .solvent-desc li::before {
+    content: ""; position: absolute; left: 0; top: 7px;
+    width: 5px; height: 5px; border-radius: 50%; background: var(--accent);
   }
 
   /* Sliders */
   .ctrl { margin-bottom: 14px; }
   .ctrl-label {
-    display: flex; justify-content: space-between; align-items: baseline;
-    font-size: 11.5px; color: var(--muted); margin-bottom: 5px;
+    display: flex; justify-content: space-between; align-items: center;
+    font-size: 13px; color: var(--muted); margin-bottom: 7px;
   }
-  .ctrl-label span { font-weight: 600; color: var(--text); font-size: 12px; }
+  .ctrl-label > span {
+    font-weight: 600; color: var(--accent); font-size: 12px;
+    font-family: 'IBM Plex Mono', monospace;
+    background: var(--accent-lt); padding: 3px 8px; border-radius: 6px;
+    white-space: nowrap;
+  }
   input[type=range] {
-    width: 100%; height: 4px; cursor: pointer;
-    accent-color: var(--accent);
+    width: 100%; height: 5px; cursor: pointer;
     appearance: none; -webkit-appearance: none;
     background: var(--border); border-radius: 99px; outline: none;
   }
@@ -148,50 +195,60 @@ HTML_TEMPLATE = r"""<!DOCTYPE html>
   .divider { border: none; border-top: 1px solid var(--border); margin: 18px 0; }
 
   /* ── Main content ───────────────────────────────────────────────────────── */
-  .main { padding: 28px 28px 40px; display: flex; flex-direction: column; gap: 20px; }
+  .main { padding: 30px 30px 44px; display: flex; flex-direction: column; gap: 22px; }
 
   /* Page header */
   .page-header { display: flex; align-items: flex-start; justify-content: space-between; }
-  .page-header h2 { font-size: 20px; font-weight: 700; letter-spacing: -.02em; }
-  .page-header p  { font-size: 12px; color: var(--muted); margin-top: 3px; }
+  .page-header h2 { font-size: 22px; font-weight: 700; letter-spacing: -.02em; }
+  .page-header p  { font-size: 13px; color: var(--muted); margin-top: 4px; }
   .badge {
     display: inline-flex; align-items: center; gap: 5px;
-    padding: 4px 10px; border-radius: 99px;
+    padding: 5px 12px; border-radius: 99px;
     background: var(--accent-lt); color: var(--accent);
-    font-size: 11px; font-weight: 600;
+    font-size: 12px; font-weight: 600; margin-right: 132px;
   }
 
   /* KPI row */
-  .kpi-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
+  .kpi-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
   .kpi {
+    position: relative; overflow: hidden;
     background: var(--surface); border: 1px solid var(--border);
-    border-radius: 12px; padding: 20px 22px;
+    border-radius: 14px; padding: 20px 22px;
     box-shadow: var(--shadow);
+    transition: transform .15s ease, box-shadow .15s ease;
   }
-  .kpi-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
-  .kpi-label { font-size: 11px; font-weight: 500; color: var(--muted); text-transform: uppercase; letter-spacing: .04em; }
-  .kpi-value { font-size: 26px; font-weight: 700; letter-spacing: -.02em; color: var(--text); line-height: 1; }
+  .kpi:hover { transform: translateY(-2px); box-shadow: var(--shadow-md); }
+  /* accent strip on the headline (cost) card */
+  .kpi.is-primary::before {
+    content: ""; position: absolute; left: 0; top: 14px; bottom: 14px;
+    width: 3px; border-radius: 0 3px 3px 0; background: var(--accent);
+  }
+  .kpi-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
+  .kpi-label { font-size: 11.5px; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: .05em; }
+  .kpi-value { font-size: 29px; font-weight: 700; letter-spacing: -.025em; color: var(--text); line-height: 1; }
   .kpi-value.primary { color: var(--accent); }
   .kpi-value.green   { color: var(--green);  }
-  .kpi-meta { font-size: 11px; color: var(--faint); margin-top: 8px; }
+  .kpi-unit { font-size: 14px; font-weight: 700; letter-spacing: -.01em; margin-left: 7px; }
+  .kpi-meta { font-size: 11.5px; color: var(--faint); margin-top: 9px; }
 
   /* Chart grid */
-  .chart-grid    { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
-  .chart-grid-3  { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px; }
+  .chart-grid    { display: grid; grid-template-columns: 1fr 1fr; gap: 22px; }
+  .chart-grid-3  { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 22px; }
   .card {
     background: var(--surface); border: 1px solid var(--border);
-    border-radius: 12px; padding: 20px 22px;
+    border-radius: 14px; padding: 22px 24px;
     box-shadow: var(--shadow);
+    transition: box-shadow .15s ease;
   }
+  .card:hover { box-shadow: var(--shadow-md); }
   .card.span-2 { grid-column: span 2; }
   .card.span-3 { grid-column: span 3; }
-  .card-header { margin-bottom: 14px; }
-  .card-title { font-size: 13px; font-weight: 600; color: var(--text); }
-  .card-sub   { font-size: 11px; color: var(--muted); margin-top: 2px; }
+  .card-title { font-size: 14.5px; font-weight: 600; color: var(--text); letter-spacing: -.01em; }
+  .card-sub   { font-size: 12px; color: var(--muted); margin-top: 3px; }
   .chart-wrap { position: relative; }
-  .chart-wrap.h200 { height: 200px; }
-  .chart-wrap.h240 { height: 240px; }
-  .chart-wrap.h180 { height: 180px; }
+  .chart-wrap.h200 { height: 230px; }
+  .chart-wrap.h240 { height: 270px; }
+  .chart-wrap.h180 { height: 210px; }
 
   /* Sources */
   .sources-bar {
@@ -203,15 +260,16 @@ HTML_TEMPLATE = r"""<!DOCTYPE html>
 
   /* ── Theme toggle ───────────────────────────────────────────────────────── */
   .theme-toggle {
-    display: flex; align-items: center; gap: 7px;
-    width: 100%; padding: 8px 12px; margin-top: auto;
+    position: absolute; top: 18px; right: 20px; z-index: 50;
+    display: flex; align-items: center; justify-content: center; gap: 7px;
+    width: 118px; padding: 8px 12px;
     border: 1.5px solid var(--border); border-radius: 8px;
-    background: transparent; color: var(--muted);
+    background: var(--surface); color: var(--muted);
     font-size: 12px; font-weight: 500; font-family: inherit;
-    cursor: pointer; transition: all .15s;
+    cursor: pointer; transition: all .15s; box-shadow: var(--shadow);
   }
   .theme-toggle:hover { border-color: var(--accent); color: var(--accent); }
-  .theme-toggle .icon { font-size: 14px; }
+  .theme-toggle .icon { display: inline-flex; align-items: center; }
 
   /* ── Info button & popup ─────────────────────────────────────────────────── */
   .card-header { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 14px; }
@@ -236,13 +294,13 @@ HTML_TEMPLATE = r"""<!DOCTYPE html>
   .modal-overlay.open { display: flex; }
   .modal {
     background: var(--surface); border: 1px solid var(--border);
-    border-radius: 14px; padding: 24px 26px; max-width: 420px; width: 90%;
+    border-radius: 14px; padding: 26px 28px; max-width: 460px; width: 90%;
     box-shadow: 0 20px 60px rgba(0,0,0,.15); position: relative;
     animation: popIn .18s ease;
   }
   @keyframes popIn { from { opacity:0; transform:scale(.96) translateY(6px); } to { opacity:1; transform:none; } }
-  .modal-title { font-size: 14px; font-weight: 700; color: var(--text); margin-bottom: 10px; }
-  .modal-body  { font-size: 12.5px; color: var(--muted); line-height: 1.7; }
+  .modal-title { font-size: 16px; font-weight: 700; color: var(--text); margin-bottom: 11px; }
+  .modal-body  { font-size: 14px; color: var(--muted); line-height: 1.7; }
   .modal-body strong { color: var(--text); font-weight: 600; }
   .modal-close {
     position: absolute; top: 14px; right: 16px;
@@ -330,11 +388,49 @@ HTML_TEMPLATE = r"""<!DOCTYPE html>
   .pfd-leg-sw { width:22px; display:block; }
 
   /* ── Step cards ──────────────────────────────────────────────────────────── */
-  .step-row { display:grid; grid-template-columns:repeat(5,1fr); gap:12px; }
-  .step-card { background:var(--surface); border:1px solid var(--border); border-radius:10px; padding:14px; box-shadow:var(--shadow); }
-  .step-num { width:22px; height:22px; border-radius:50%; background:var(--accent); color:#fff; font-size:10px; font-weight:700; display:flex; align-items:center; justify-content:center; margin-bottom:8px; flex-shrink:0; }
-  .step-title { font-size:11.5px; font-weight:700; color:var(--text); margin-bottom:5px; }
-  .step-body  { font-size:10.5px; color:var(--muted); line-height:1.6; }
+  .step-row { display:grid; grid-template-columns:repeat(5,1fr); gap:14px; }
+  .step-card {
+    position:relative;
+    background:var(--info-bg); border:1px solid var(--border);
+    border-radius:14px; padding:18px 16px; box-shadow:var(--shadow);
+    transition:transform .15s ease, box-shadow .15s ease;
+  }
+  .step-card:hover { transform:translateY(-2px); box-shadow:var(--shadow-md); }
+  /* connector line between consecutive steps */
+  .step-card:not(:first-child)::before {
+    content:""; position:absolute; left:-14px; top:31px;
+    width:14px; height:2px; background:var(--border);
+  }
+  .step-num {
+    width:28px; height:28px; border-radius:9px;
+    background:linear-gradient(135deg, var(--accent), var(--pz)); color:#fff;
+    font-size:13px; font-weight:700; font-family:'Space Grotesk', system-ui, sans-serif;
+    display:flex; align-items:center; justify-content:center;
+    margin-bottom:11px; flex-shrink:0; box-shadow:var(--shadow);
+  }
+  .step-title { font-size:13.5px; font-weight:700; color:var(--text); margin-bottom:6px; letter-spacing:-.01em; }
+  .step-body  { font-size:12px; color:var(--muted); line-height:1.6; }
+
+  /* ── Responsive ─────────────────────────────────────────────────────────── */
+  @media (max-width: 1100px) {
+    .kpi-row { grid-template-columns: repeat(2, 1fr); }
+  }
+  @media (max-width: 900px) {
+    .shell { grid-template-columns: 1fr; }
+    .sidebar {
+      position: static; height: auto; width: auto;
+      margin: 16px; border: 1px solid var(--border);
+    }
+    .chart-grid, .chart-grid-3 { grid-template-columns: 1fr; }
+    .card.span-2, .card.span-3 { grid-column: span 1; }
+    .step-row { grid-template-columns: repeat(2, 1fr); }
+    .step-card:not(:first-child)::before { display: none; }
+  }
+  @media (max-width: 560px) {
+    .kpi-row { grid-template-columns: 1fr; }
+    .step-row { grid-template-columns: 1fr; }
+    .main { padding: 18px 16px 32px; }
+  }
 </style>
 </head>
 <body>
@@ -343,16 +439,21 @@ HTML_TEMPLATE = r"""<!DOCTYPE html>
 <!-- ── Sidebar ─────────────────────────────────────────────────────────────── -->
 <aside class="sidebar">
   <div class="sidebar-brand">
-    <h1>CCUS Techno-Economic<br>Analysis</h1>
+    <div class="brand-row">
+      <span class="brand-mark">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10z"/><path d="M2 21c0-3 1.85-5.36 5.08-6"/></svg>
+      </span>
+      <h1>CCUS Techno-Economic<br>Analysis</h1>
+    </div>
     <p>Levelised cost of post-combustion CO₂ capture: adjust parameters to explore configurations.</p>
   </div>
 
   <div class="sidebar-section">
     <div class="sidebar-section-label">Solvent</div>
     <div class="solvent-tabs">
-      <button class="stab sel-mea" id="tab-MEA"        onclick="setSolvent('MEA')">MEA</button>
-      <button class="stab"         id="tab-Piperazine"  onclick="setSolvent('Piperazine')">PZ</button>
-      <button class="stab"         id="tab-K2CO3"       onclick="setSolvent('K2CO3')">K₂CO₃</button>
+      <button class="stab sel-mea" id="tab-MEA"        title="Monoethanolamine"      onclick="setSolvent('MEA')">MEA</button>
+      <button class="stab"         id="tab-Piperazine"  title="Piperazine"            onclick="setSolvent('Piperazine')">PZ</button>
+      <button class="stab"         id="tab-K2CO3"       title="Potassium Carbonate"   onclick="setSolvent('K2CO3')">K₂CO₃</button>
     </div>
     <div class="solvent-info" id="solvent-info"></div>
   </div>
@@ -393,24 +494,25 @@ HTML_TEMPLATE = r"""<!DOCTYPE html>
     </div>
   </div>
   <div class="sidebar-spacer"></div>
-  <hr class="divider">
-  <button class="theme-toggle" id="theme-toggle" onclick="toggleTheme()">
-    <span class="icon" id="theme-icon">🌙</span>
-    <span id="theme-label">Dark Mode</span>
-  </button>
 </aside>
+
+<!-- Theme toggle (fixed, top-right) -->
+<button class="theme-toggle" id="theme-toggle" onclick="toggleTheme()" title="Toggle light/dark theme">
+  <span class="icon" id="theme-icon"></span>
+  <span id="theme-label">Dark Mode</span>
+</button>
 
 <!-- ── Main ────────────────────────────────────────────────────────────────── -->
 <main class="main">
 
   <!-- Page navigation tabs -->
   <nav class="page-nav">
-    <button class="page-tab active" data-page="overview" onclick="showPage('overview')">Process Overview</button>
-    <button class="page-tab"        data-page="analysis"  onclick="showPage('analysis')">Cost Analysis</button>
+    <button class="page-tab active" data-page="analysis"  onclick="showPage('analysis')">Cost Analysis</button>
+    <button class="page-tab"        data-page="overview" onclick="showPage('overview')">Process Overview</button>
   </nav>
 
   <!-- ════ PAGE 1: Process Overview ════════════════════════════════════════ -->
-  <div id="page-overview">
+  <div id="page-overview" style="display:none;">
 
     <div class="page-header" >
       <div>
@@ -424,16 +526,81 @@ HTML_TEMPLATE = r"""<!DOCTYPE html>
       <div class="card-header">
         <div class="card-header-text">
           <div class="card-title">Process Flow Diagram</div>
-          <div class="card-sub">Click any equipment block for details</div>
+          <div class="card-sub">Click any unit for details</div>
         </div>
       </div>
-      <div style="position:relative;width:100%;padding-bottom:57.8%;background:#15181d;border-radius:12px;overflow:hidden;border:1px solid var(--border)">
-        <iframe
-          src="Carbon Capture Flow.html"
-          style="position:absolute;inset:0;width:100%;height:100%;border:none"
-          title="Carbon Capture Process Flow Diagram"
-          loading="lazy"
-        ></iframe>
+
+      <div class="pfd-stage">
+        <!-- stream lines -->
+        <svg class="pfd-streams" viewBox="0 0 1280 740" style="position:absolute;inset:0;width:100%;height:100%">
+          <defs>
+            <marker id="pfd-arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse">
+              <path d="M0,0 L10,5 L0,10 z" fill="context-stroke"></path>
+            </marker>
+          </defs>
+          <g fill="none" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#pfd-arrow)">
+            <path class="s-flue"  d="M30,460 H150"></path>
+            <path class="s-clean" d="M235,150 V58"></path>
+            <path class="s-rich"  d="M320,470 H430 V372 H520"></path>
+            <path class="s-rich"  d="M685,345 H750 V215 H815"></path>
+            <path class="s-lean"  d="M815,400 H685"></path>
+            <path class="s-lean"  d="M602,430 V515"></path>
+            <path class="s-lean"  d="M520,565 H400 V180 H320"></path>
+            <path class="s-co2"   d="M905,140 V96 H1150 V115"></path>
+            <path class="s-co2"   d="M1225,172 H1268"></path>
+            <path class="s-heat"  d="M872,500 V560"></path>
+            <path class="s-heat"  d="M938,560 V500"></path>
+          </g>
+          <text class="s-lbl s-lbl-flue"  x="34"   y="445">FLUE GAS</text>
+          <text class="s-lbl s-lbl-clean" x="250"  y="92">CLEAN GAS</text>
+          <text class="s-lbl s-lbl-rich"  x="338"  y="455">RICH</text>
+          <text class="s-lbl s-lbl-lean"  x="408"  y="165">LEAN</text>
+          <text class="s-lbl s-lbl-co2"   x="915"  y="118">CO₂</text>
+          <text class="s-lbl s-lbl-co2"   x="1120" y="210">TO STORAGE</text>
+          <text class="s-lbl s-lbl-heat"  x="965"  y="540">HEAT</text>
+        </svg>
+
+        <!-- equipment -->
+        <div class="pfd-equip pfd-column pfd-teal" style="left:11.72%;top:20.27%;width:13.28%;height:56.76%" onclick="showInfo('pfd-absorber')">
+          <span class="pfd-badge">1</span>
+          <span class="pfd-name">Absorber</span>
+          <span class="pfd-desc">CO₂ → solvent</span>
+        </div>
+        <div class="pfd-equip pfd-blue" style="left:40.63%;top:42.57%;width:12.89%;height:15.54%" onclick="showInfo('pfd-hx')">
+          <span class="pfd-badge">2</span>
+          <span class="pfd-name">Lean–Rich HX</span>
+          <span class="pfd-desc">Heat recovery</span>
+        </div>
+        <div class="pfd-equip pfd-teal" style="left:40.63%;top:69.59%;width:12.89%;height:13.51%" onclick="showInfo('pfd-cooler')">
+          <span class="pfd-badge">3</span>
+          <span class="pfd-name">Lean Cooler</span>
+          <span class="pfd-desc">Cools solvent</span>
+        </div>
+        <div class="pfd-equip pfd-column pfd-heat" style="left:63.67%;top:18.92%;width:14.06%;height:48.65%" onclick="showInfo('pfd-regenerator')">
+          <span class="pfd-badge">4</span>
+          <span class="pfd-name">Regenerator</span>
+          <span class="pfd-desc">Strips CO₂</span>
+        </div>
+        <div class="pfd-equip pfd-heat" style="left:63.67%;top:75.68%;width:14.06%;height:12.84%" onclick="showInfo('pfd-reboiler')">
+          <span class="pfd-badge">5</span>
+          <span class="pfd-name">Reboiler</span>
+          <span class="pfd-desc">Steam heat</span>
+        </div>
+        <div class="pfd-equip pfd-power" style="left:83.98%;top:15.54%;width:11.72%;height:15.54%" onclick="showInfo('pfd-compressor')">
+          <span class="pfd-badge">6</span>
+          <span class="pfd-name">CO₂ Compressor</span>
+          <span class="pfd-desc">→ 150 bar</span>
+        </div>
+      </div>
+
+      <!-- stream legend -->
+      <div class="pfd-legend">
+        <span class="pfd-leg-item"><svg class="pfd-leg-sw" height="8" viewBox="0 0 22 8"><line x1="0" y1="4" x2="22" y2="4" class="s-flue"  stroke-width="3"></line></svg>Flue gas</span>
+        <span class="pfd-leg-item"><svg class="pfd-leg-sw" height="8" viewBox="0 0 22 8"><line x1="0" y1="4" x2="22" y2="4" class="s-clean" stroke-width="3"></line></svg>Clean gas</span>
+        <span class="pfd-leg-item"><svg class="pfd-leg-sw" height="8" viewBox="0 0 22 8"><line x1="0" y1="4" x2="22" y2="4" class="s-rich"  stroke-width="3"></line></svg>Rich solvent</span>
+        <span class="pfd-leg-item"><svg class="pfd-leg-sw" height="8" viewBox="0 0 22 8"><line x1="0" y1="4" x2="22" y2="4" class="s-lean"  stroke-width="3"></line></svg>Lean solvent</span>
+        <span class="pfd-leg-item"><svg class="pfd-leg-sw" height="8" viewBox="0 0 22 8"><line x1="0" y1="4" x2="22" y2="4" class="s-co2"   stroke-width="3"></line></svg>CO₂</span>
+        <span class="pfd-leg-item"><svg class="pfd-leg-sw" height="8" viewBox="0 0 22 8"><line x1="0" y1="4" x2="22" y2="4" class="s-heat"  stroke-width="3"></line></svg>Heat</span>
       </div>
     </div>
 
@@ -469,7 +636,7 @@ HTML_TEMPLATE = r"""<!DOCTYPE html>
   </div><!-- end page-overview -->
 
   <!-- ════ PAGE 2: Cost Analysis (hidden by default) ════════════════════════ -->
-  <div id="page-analysis" style="display:none;">
+  <div id="page-analysis">
 
   <!-- Header -->
   <div class="page-header">
@@ -482,7 +649,7 @@ HTML_TEMPLATE = r"""<!DOCTYPE html>
 
   <!-- KPIs -->
   <div class="kpi-row">
-    <div class="kpi">
+    <div class="kpi is-primary">
       <div class="kpi-header">
         <div class="kpi-label">Levelised Cost</div>
         <button class="info-btn" onclick="showInfo('kpi-cost')">i</button>
@@ -503,8 +670,8 @@ HTML_TEMPLATE = r"""<!DOCTYPE html>
         <div class="kpi-label">CO₂ Captured</div>
         <button class="info-btn" onclick="showInfo('kpi-co2')">i</button>
       </div>
-      <div class="kpi-value green" id="kpi-co2">-</div>
-      <div class="kpi-meta">tonnes per year</div>
+      <div class="kpi-value green"><span id="kpi-co2">-</span><span class="kpi-unit">tonnes/yr</span></div>
+      <div class="kpi-meta">Captured annually</div>
     </div>
     <div class="kpi">
       <div class="kpi-header">
@@ -593,21 +760,30 @@ HTML_TEMPLATE = r"""<!DOCTYPE html>
 const SOLVENTS = {
   MEA: {
     name:"Monoethanolamine (MEA)", short:"MEA",
-    desc:"Industry benchmark. Widely deployed, energy-intensive regeneration.",
+    desc:[
+      "It is the industry benchmark solvent, deployed in nearly every commercial post-combustion capture plant to date.",
+      "Its high reactivity comes at the cost of energy-intensive regeneration and faster solvent degradation.",
+    ],
     regen:3.7, comp_mwh:0.110, makeup:1.50, sol_cost:1.50,
-    cap_max:0.90, capex_f:1.00, color:"#2563eb",
+    cap_max:0.90, capex_f:1.00, color:"#3b82f6",
   },
   Piperazine: {
     name:"Piperazine (PZ)", short:"PZ",
-    desc:"Advanced amine. Faster kinetics, 35% lower regen. energy, higher solvent cost.",
+    desc:[
+      "Piperazine is an advanced amine with faster CO₂ absorption kinetics and about 35% lower regeneration energy than MEA.",
+      "These efficiency gains are offset by a higher solvent purchase cost per kilogram.",
+    ],
     regen:2.4, comp_mwh:0.110, makeup:0.50, sol_cost:2.50,
-    cap_max:0.95, capex_f:1.05, color:"#16a34a",
+    cap_max:0.95, capex_f:1.05, color:"#10b981",
   },
   K2CO3: {
     name:"Potassium Carbonate (K₂CO₃)", short:"K₂CO₃",
-    desc:"Low-cost inorganic solvent. Slower kinetics, lowest energy penalty.",
+    desc:[
+      "Potassium carbonate is a low-cost inorganic solvent with the lowest energy penalty of the three options.",
+      "Its slower reaction kinetics limit the maximum achievable capture efficiency to around 85%.",
+    ],
     regen:2.0, comp_mwh:0.110, makeup:0.30, sol_cost:0.50,
-    cap_max:0.85, capex_f:0.95, color:"#d97706",
+    cap_max:0.85, capex_f:0.95, color:"#f59e0b",
   },
 };
 
@@ -670,6 +846,16 @@ function scaleCurve(cr,ep,elp,dr,pl){
 let sol="MEA";
 const el=id=>document.getElementById(id);
 
+// Paint an accent-filled track on a range input up to its current value
+function fillSlider(id){
+  const s=el(id); if(!s) return;
+  const pct=((s.value-s.min)/(s.max-s.min))*100;
+  const cs=getComputedStyle(s);
+  const fill=cs.getPropertyValue('--accent').trim();
+  const rest=cs.getPropertyValue('--border').trim();
+  s.style.background=`linear-gradient(to right, ${fill} 0%, ${fill} ${pct}%, ${rest} ${pct}%, ${rest} 100%)`;
+}
+
 function setSolvent(s){
   sol=s;
   document.querySelectorAll(".stab").forEach(t=>{
@@ -679,19 +865,20 @@ function setSolvent(s){
       t.classList.add(c);
     }
   });
-  el("solvent-info").textContent=SOLVENTS[s].desc;
+  const bullets=SOLVENTS[s].desc.map(d=>`<li>${d}</li>`).join("");
+  el("solvent-info").innerHTML=`<span class="solvent-name">${SOLVENTS[s].name}</span><ul class="solvent-desc">${bullets}</ul>`;
   update();
 }
 
 // ── Chart setup ───────────────────────────────────────────────────────────────
 Chart.defaults.font.family="IBM Plex Sans, system-ui, sans-serif";
-Chart.defaults.font.size=11;
+Chart.defaults.font.size=13;
 Chart.defaults.color="#64748b";
 Chart.defaults.borderColor="#f1f5f9";
 
 const BCOLORS={
-  "CAPEX":"#2563eb","Energy":"#dc2626","Compression":"#7c3aed",
-  "Solvent":"#059669","Labor":"#d97706","Maintenance":"#0891b2","Other":"#94a3b8"
+  "CAPEX":"#3b82f6","Energy":"#ef4444","Compression":"#8b5cf6",
+  "Solvent":"#10b981","Labor":"#f59e0b","Maintenance":"#06b6d4","Other":"#94a3b8"
 };
 
 function mkChart(id,type,data,opts){
@@ -703,7 +890,7 @@ function mkChart(id,type,data,opts){
 const TIP_PT=(label)=>({callbacks:{label:ctx=>` ${ctx.dataset.label||label||""}: $${(ctx.parsed.y??ctx.parsed.x).toFixed(2)}`}});
 
 const breakdownChart=mkChart("breakdownChart","bar",{labels:[],datasets:[]},{
-  plugins:{legend:{display:true,position:"bottom",labels:{boxWidth:10,padding:12,font:{size:10}}},...TIP_PT()},
+  plugins:{legend:{display:true,position:"bottom",labels:{boxWidth:12,padding:12,font:{size:12}}},...TIP_PT()},
   scales:{
     x:{stacked:true,grid:{display:false},ticks:{display:false}},
     y:{stacked:true,grid:{color:"#f1f5f9"},ticks:{callback:v=>`$${v}`},border:{display:false}},
@@ -719,13 +906,13 @@ const compChart=mkChart("comparisonChart","bar",{labels:[],datasets:[]},{
 });
 
 const scaleChart=mkChart("scaleChart","line",{labels:[],datasets:[]},{
-  plugins:{legend:{display:true,position:"top",labels:{boxWidth:10,padding:16,font:{size:11}}},
+  plugins:{legend:{display:true,position:"top",labels:{boxWidth:12,padding:16,font:{size:12}}},
     tooltip:{callbacks:{label:ctx=>` ${ctx.dataset.label}: $${ctx.parsed.y.toFixed(2)}/t CO₂`}}},
   scales:{
     x:{grid:{color:"#f1f5f9"},border:{display:false},
-       title:{display:true,text:"Plant capacity (tonne CO₂ / day)",color:"#94a3b8",font:{size:10}}},
+       title:{display:true,text:"Plant capacity (tonne CO₂ / day)",color:"#94a3b8",font:{size:12}}},
     y:{grid:{color:"#f1f5f9"},border:{display:false},ticks:{callback:v=>`$${v}`},
-       title:{display:true,text:"$/tonne CO₂",color:"#94a3b8",font:{size:10}}},
+       title:{display:true,text:"$/tonne CO₂",color:"#94a3b8",font:{size:12}}},
   },
   elements:{line:{tension:.35},point:{radius:3,hoverRadius:5}},
 });
@@ -734,7 +921,7 @@ const sensChart=mkChart("sensitivityChart","bar",{labels:[],datasets:[]},{
   indexAxis:"y",
   grouped:false,
   plugins:{
-    legend:{display:true,position:"top",labels:{boxWidth:10,padding:14,font:{size:11}}},
+    legend:{display:true,position:"top",labels:{boxWidth:12,padding:14,font:{size:12}}},
     tooltip:{callbacks:{label:ctx=>{
       const [lo,hi]=Array.isArray(ctx.raw)?ctx.raw:[ctx.raw,ctx.raw];
       return ` $${lo.toFixed(2)} → $${hi.toFixed(2)}/t CO₂`;
@@ -758,6 +945,10 @@ function update(){
   el("v-elp").textContent=elp;
   el("v-dr").textContent=(dr*100).toFixed(1);
   el("v-pl").textContent=pl;
+
+  // Filled slider tracks (accent fill up to the thumb)
+  ["capacity","capture_rate","energy_price","electricity_price","discount_rate","plant_life"]
+    .forEach(fillSlider);
 
   const r=calc(sol,cap,cr,ep,elp,dr,pl);
 
@@ -835,12 +1026,14 @@ function applyTheme(theme) {
   const dark = theme === 'dark';
   document.documentElement.setAttribute('data-theme', dark ? 'dark' : '');
   localStorage.setItem('theme', theme);
-  el('theme-icon').textContent  = dark ? '☀️' : '🌙';
+  const sunIcon  = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>';
+  const moonIcon = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>';
+  el('theme-icon').innerHTML    = dark ? sunIcon : moonIcon;
   el('theme-label').textContent = dark ? 'Light Mode' : 'Dark Mode';
 
   // Update Chart.js global defaults for new theme
-  const gridColor  = dark ? 'rgba(255,255,255,.06)' : '#f1f5f9';
-  const labelColor = dark ? '#a1a1a1' : '#64748b';
+  const gridColor  = dark ? 'rgba(148,163,184,.12)' : '#f1f5f9';
+  const labelColor = dark ? '#9babbf' : '#64748b';
   Chart.defaults.color       = labelColor;
   Chart.defaults.borderColor = gridColor;
 
@@ -851,6 +1044,10 @@ function applyTheme(theme) {
     (c.options.scales?.y?.grid  || {}).color = gridColor;
     c.update('none');
   });
+
+  // Repaint slider fills with the new theme's accent color
+  ["capacity","capture_rate","energy_price","electricity_price","discount_rate","plant_life"]
+    .forEach(fillSlider);
 }
 function toggleTheme() {
   const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
