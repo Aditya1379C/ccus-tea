@@ -117,17 +117,17 @@ python3 -c "import report; report.generate()"
 The dashboard is a **two-page layout** switched by a segmented control, defaulting to **Cost Analysis**:
 
 **Cost Analysis page**
-- **4 KPI cards** — Levelised Cost, Total CAPEX, CO₂ Captured, Annual OPEX, each colour-tinted (blue / indigo / green / slate) and updating live
-- **4 Chart.js charts** — stacked cost breakdown, solvent comparison bars, economy of scale curves, sensitivity tornado
-- **6 interactive sliders** + a 3-way solvent segmented control (capacity, capture rate, energy price, electricity price, discount rate, plant life)
+- **4 KPI cards:** Levelised Cost, Total CAPEX, CO₂ Captured, Annual OPEX, each colour-tinted (blue / indigo / green / slate) and updating live
+- **4 Chart.js charts:** stacked cost breakdown, solvent comparison bars, economy of scale curves, sensitivity tornado
+- **6 interactive sliders** plus a 3-way solvent segmented control (capacity, capture rate, energy price, electricity price, discount rate, plant life)
 
 **Process Overview page**
-- **Native Process Flow Diagram** — themed SVG/HTML (not an iframe), with clickable equipment units (A–F) that open detail popups, colour-coded stream lines, and a legend
+- **Native Process Flow Diagram:** themed SVG/HTML (not an iframe), with clickable equipment units (A to F) that open detail popups, colour-coded stream lines, and a legend
 - **5 numbered step cards** walking through the capture process
 
 **Shared UI**
-- **Info popups** — click any “i” or equipment unit; a modal scales in with a spring and fades out
-- **Light/dark theme toggle** — fixed in the top-right corner, driven by CSS custom properties
+- **Info popups:** click any “i” or equipment unit; a modal scales in with a spring and fades out
+- **Light/dark theme toggle:** fixed in the top-right corner, driven by CSS custom properties
 
 ---
 
