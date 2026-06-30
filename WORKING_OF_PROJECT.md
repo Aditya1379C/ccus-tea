@@ -22,9 +22,10 @@ ccus_tea/
 ├── model.py                 # TEA engine — all engineering/economics calculations
 ├── report.py                # Dashboard generator — builds dashboard.html
 └── report/
-    ├── dashboard.html       # Generated output (open directly in browser)
-    └── Carbon Capture Flow.html   # Interactive process flow diagram
+    └── dashboard.html       # Generated output (open directly in browser)
 ```
+
+> The process flow diagram is now rendered natively inside `dashboard.html` (themed SVG + HTML). The old bundled `Carbon Capture Flow.html` iframe has been removed.
 
 ---
 
@@ -113,11 +114,21 @@ Calls the model functions, embeds all results into a large HTML template string,
 python3 -c "import report; report.generate()"
 ```
 
-The dashboard includes:
+The dashboard is a **two-page layout** switched by a glass segmented control, defaulting to **Cost Analysis**:
+
+**Cost Analysis page**
+- **4 KPI cards** — Levelised Cost, Total CAPEX, CO₂ Captured, Annual OPEX, each colour-tinted (blue / indigo / green / slate) and updating live
 - **4 Chart.js charts** — stacked cost breakdown, solvent comparison bars, economy of scale curves, sensitivity tornado
-- **6 interactive sliders** — capacity, capture rate, energy price, electricity price, discount rate, plant life
-- **Process Flow Diagram** — embedded iframe of `Carbon Capture Flow.html` with clickable equipment and 3 visual themes
-- **Light/dark theme toggle** — driven entirely by CSS custom properties
+- **6 interactive sliders** + a 3-way solvent segmented control (capacity, capture rate, energy price, electricity price, discount rate, plant life)
+
+**Process Overview page**
+- **Native Process Flow Diagram** — themed SVG/HTML (not an iframe), with clickable equipment units (A–F) that open detail popups, colour-coded stream lines, and a legend
+- **5 numbered step cards** walking through the capture process
+
+**Shared UI**
+- **Info popups** — click any “i” or equipment unit; a glass modal scales in with a spring and fades out
+- **Light/dark theme toggle** — fixed in the top-right corner, driven by CSS custom properties
+- **Liquid-glass styling** — translucent frosted surfaces (`backdrop-filter`) on cards, sidebar, controls, and modal; a runtime-generated SVG displacement map adds edge refraction to the modal (Chrome only, degrades to plain frost elsewhere)
 
 ---
 
@@ -152,9 +163,10 @@ This is the most technically interesting part. The sliders are not reading from 
 | Dashboard output | Single HTML file | Portable, shareable, no server needed |
 | Charts | Chart.js (CDN) | Only external dependency |
 | Interactivity | Vanilla JS | No framework overhead |
-| Styling | CSS custom properties | Light/dark theme with zero JS |
-| Fonts | Google Fonts (IBM Plex Sans, IBM Plex Mono, Space Grotesk) | Consistent with the PFD diagram |
-| PFD diagram | Self-contained bundled HTML (iframe) | Preserves original interactivity and themes |
+| Styling | CSS custom properties + `backdrop-filter` glass | Light/dark theming and liquid-glass surfaces with minimal JS |
+| Fonts | Google Fonts (IBM Plex Sans, IBM Plex Mono, Space Grotesk) | Clean technical type system |
+| PFD diagram | Native themed SVG + HTML | Fully integrated, theme-aware, clickable equipment |
+| Popup motion | Web Animations API | Spring scale-in / fade-out for info modals |
 
 ---
 
