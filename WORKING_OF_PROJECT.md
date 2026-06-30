@@ -114,7 +114,7 @@ Calls the model functions, embeds all results into a large HTML template string,
 python3 -c "import report; report.generate()"
 ```
 
-The dashboard is a **two-page layout** switched by a glass segmented control, defaulting to **Cost Analysis**:
+The dashboard is a **two-page layout** switched by a segmented control, defaulting to **Cost Analysis**:
 
 **Cost Analysis page**
 - **4 KPI cards** — Levelised Cost, Total CAPEX, CO₂ Captured, Annual OPEX, each colour-tinted (blue / indigo / green / slate) and updating live
@@ -126,9 +126,8 @@ The dashboard is a **two-page layout** switched by a glass segmented control, de
 - **5 numbered step cards** walking through the capture process
 
 **Shared UI**
-- **Info popups** — click any “i” or equipment unit; a glass modal scales in with a spring and fades out
+- **Info popups** — click any “i” or equipment unit; a modal scales in with a spring and fades out
 - **Light/dark theme toggle** — fixed in the top-right corner, driven by CSS custom properties
-- **Liquid-glass styling** — translucent frosted surfaces (`backdrop-filter`) on cards, sidebar, controls, and modal; a runtime-generated SVG displacement map adds edge refraction to the modal (Chrome only, degrades to plain frost elsewhere)
 
 ---
 
